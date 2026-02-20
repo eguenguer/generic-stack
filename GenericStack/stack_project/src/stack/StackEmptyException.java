@@ -1,21 +1,21 @@
 package stack;
 
 /**
- * Exception thrown when pop or peek is called on an empty stack.
+ * This error is thrown when you try to read from an empty stack.
  */
 public class StackEmptyException extends Exception {
 
     /**
-     * Constructs a StackEmptyException with a default message.
+     * Creates the error with a default message.
      */
     public StackEmptyException() {
-        super("Stack is empty – cannot read any elements.");
+        super("Stack is empty.");
     }
 
     /**
-     * Constructs a StackEmptyException with a custom message.
+     * Creates the error with a custom message.
      *
-     * @param message the detail message
+     * @param message the error message
      */
     public StackEmptyException(String message) {
         super(message);
