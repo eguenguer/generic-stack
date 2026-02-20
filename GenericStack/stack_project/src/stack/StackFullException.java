@@ -1,21 +1,21 @@
 package stack;
 
 /**
- * Exception thrown when an element is pushed onto a full stack.
+ * This error is thrown when you try to add an element to a full stack.
  */
 public class StackFullException extends Exception {
 
     /**
-     * Constructs a StackFullException with a default message.
+     * Creates the error with a default message.
      */
     public StackFullException() {
-        super("Stack is full – cannot push any more elements.");
+        super("Stack is full.");
     }
 
     /**
-     * Constructs a StackFullException with a custom message.
+     * Creates the error with a custom message.
      *
-     * @param message the detail message
+     * @param message the error message
      */
     public StackFullException(String message) {
         super(message);
