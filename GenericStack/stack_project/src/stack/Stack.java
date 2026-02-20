@@ -1,76 +1,60 @@
 package stack;
 
 /**
- * A generic, array-based stack (LIFO – Last In, First Out).
+ * A generic stack where the last element in is the first element out (LIFO).
+ * Elements are stored in a plain array.
  *
- * <p>Because Java does not allow the direct creation of generic arrays,
- * an {@code Object[]} is used internally and elements are cast to {@code T}
- * when retrieved.</p>
- *
- * @param <T> the type of elements held in this stack
+ * @param <T> the type of elements in this stack
  */
 public class Stack<T> {
 
-    // ------------------------------------------------------------------ fields
-
-    /** Internal storage array (Object[] instead of T[] due to generic array restriction). */
+    /** The array that stores all elements. */
     private Object[] elements;
 
-    /** Maximum number of elements the stack can hold. */
+    /** How many elements fit in the stack. */
     private int capacity;
 
-    /** Index of the next free slot; also represents the current number of elements. */
+    /** How many elements are currently in the stack. */
     private int top;
 
-    // --------------------------------------------------------------- constants
-
-    /** Default capacity used when no size is specified. */
-    private static final int DEFAULT_CAPACITY = 10;
-
-    // ------------------------------------------------------------- constructors
-
     /**
-     * Creates a stack with the default capacity of {@value #DEFAULT_CAPACITY}.
+     * Creates a stack with a default capacity of 10.
      */
     public Stack() {
-        this(DEFAULT_CAPACITY);
+        this.capacity = 10;
+        this.elements = new Object[this.capacity];
+        this.top = 0;
     }
 
     /**
      * Creates a stack with the given capacity.
      *
-     * @param capacity the maximum number of elements this stack can hold
-     * @throws IllegalArgumentException if {@code capacity} is less than 1
+     * @param capacity the maximum number of elements
      */
     public Stack(int capacity) {
-        if (capacity < 1) {
-            throw new IllegalArgumentException("Capacity must be at least 1.");
-        }
         this.capacity = capacity;
-        this.elements = new Object[capacity];
+        this.elements = new Object[this.capacity];
         this.top = 0;
     }
 
-    // ----------------------------------------------------------------- methods
-
     /**
-     * Pushes an element onto the top of the stack.
+     * Puts a new element on top of the stack.
      *
-     * @param element the element to be pushed
+     * @param element the element to add
      * @throws StackFullException if the stack is already full
      */
     public void push(T element) throws StackFullException {
         if (top == capacity) {
-            throw new StackFullException("Stack is full (capacity: " + capacity + ").");
+            throw new StackFullException();
         }
         elements[top] = element;
         top++;
     }
 
     /**
-     * Removes and returns the element at the top of the stack.
+     * Removes and returns the top element.
      *
-     * @return the element that was on top of the stack
+     * @return the top element
      * @throws StackEmptyException if the stack is empty
      */
     @SuppressWarnings("unchecked")
@@ -80,14 +64,14 @@ public class Stack<T> {
         }
         top--;
         T element = (T) elements[top];
-        elements[top] = null; // allow garbage collection
+        elements[top] = null;
         return element;
     }
 
     /**
-     * Returns (without removing) the element at the top of the stack.
+     * Returns the top element without removing it.
      *
-     * @return the element currently on top of the stack
+     * @return the top element
      * @throws StackEmptyException if the stack is empty
      */
     @SuppressWarnings("unchecked")
@@ -99,62 +83,20 @@ public class Stack<T> {
     }
 
     /**
-     * Returns all stack elements as a semicolon-separated string,
-     * starting from the bottom element up to the top.
+     * Returns all elements as a string separated by semicolons.
+     * Example: "10;20;30"
      *
-     * <p>Example for a stack containing 1, 2, 3 (3 on top):
-     * {@code "1;2;3"}</p>
-     *
-     * @return a {@code String} of all elements separated by {@code ;}
-     *         or an empty string if the stack is empty
+     * @return all elements as a string
      */
     public String list() {
-        if (top == 0) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
+        String result = "";
         for (int i = 0; i < top; i++) {
-            if (i > 0) {
-                sb.append(";");
+            if (i == 0) {
+                result = elements[i].toString();
+            } else {
+                result = result + ";" + elements[i].toString();
             }
-            sb.append(elements[i]);
         }
-        return sb.toString();
-    }
-
-    /**
-     * Returns {@code true} if the stack contains no elements.
-     *
-     * @return {@code true} if empty, {@code false} otherwise
-     */
-    public boolean isEmpty() {
-        return top == 0;
-    }
-
-    /**
-     * Returns {@code true} if the stack has reached its capacity.
-     *
-     * @return {@code true} if full, {@code false} otherwise
-     */
-    public boolean isFull() {
-        return top == capacity;
-    }
-
-    /**
-     * Returns the number of elements currently stored in the stack.
-     *
-     * @return current element count
-     */
-    public int size() {
-        return top;
-    }
-
-    /**
-     * Returns the maximum number of elements this stack can hold.
-     *
-     * @return the capacity
-     */
-    public int getCapacity() {
-        return capacity;
+        return result;
     }
 }
